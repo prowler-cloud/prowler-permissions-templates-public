@@ -1,0 +1,78 @@
+AWSTemplateFormatVersion: '2010-09-09'
+
+# You can invoke CloudFormation and pass the principal ARN from a command line like this:
+# aws cloudformation create-stack \
+#  --capabilities CAPABILITY_IAM --capabilities CAPABILITY_NAMED_IAM \
+#  --template-body "file://prowler-pro-saas-scan-role.yaml" \
+#  --stack-name "ProwlerProSaaSScanRole" \
+#  --parameters "ParameterKey=ExternalId,ParameterValue=ProvidedExternalID"
+
+Description: |
+  This template creates the ProwlerProSaaSScanRole role in this account with 
+  all read-only permissions to scan your account for security issues. 
+  Contains two AWS managed policies (SecurityAudit and ViewOnlyAccess) and an inline policy. 
+  It sets the trust policy on that IAM Role to permit Prowler Pro to assume that role.
+Parameters:
+  ExternalId:
+    Description: |
+      DO NOT CHANGE THIS. 
+      This is the External ID that ProwlerPro SaaS will use to assume the role ProwlerProSaaSScanRole 
+      from ProwlerPro SaaS account. 
+    Type: String
+
+Resources:
+  ProwlerProRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: ProwlerProSaaSScanRole
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              AWS: arn:aws:iam::232136659152:root
+            Action: 'sts:AssumeRole'
+            Condition:
+              StringEquals:
+                'sts:ExternalId': !Sub ${ExternalId}
+              StringLike:
+                'aws:PrincipalArn': arn:aws:iam::232136659152:role/prowler-pro-saas*
+      MaxSessionDuration: 3600
+      ManagedPolicyArns:
+        - 'arn:aws:iam::aws:policy/SecurityAudit'
+        - 'arn:aws:iam::aws:policy/job-function/ViewOnlyAccess'
+      Policies:
+        - PolicyName: ProwlerProSaaSRoleAdditionalViewPrivileges
+          PolicyDocument:
+            Version : '2012-10-17'
+            Statement:
+            - Effect: Allow
+              Action:
+                - 'account:Get*'
+                - 'appstream:DescribeFleets'
+                - 'ds:Get*'
+                - 'ds:Describe*'
+                - 'ds:List*'
+                - 'ec2:GetEbsEncryptionByDefault'
+                - 'ecr:Describe*'
+                - 'elasticfilesystem:DescribeBackupPolicy'
+                - 'glue:GetConnections'
+                - 'glue:GetSecurityConfiguration'
+                - 'glue:SearchTables'
+                - 'lambda:GetFunction'
+                - 's3:GetAccountPublicAccessBlock'
+                - 'shield:DescribeProtection'
+                - 'shield:GetSubscriptionState'
+                - 'ssm:GetDocument'
+                - 'support:Describe*'
+                - 'tag:GetTagKeys'
+              Resource: '*'
+      Tags:
+        - Key: "Service"
+          Value: "https://prowler.pro"
+        - Key: "Support"
+          Value: "help@prowler.pro"
+        - Key: "CloudFormation"
+          Value: "true"
+        - Key: "Name"
+          Value: "ProwlerProSaaSScanRole"
