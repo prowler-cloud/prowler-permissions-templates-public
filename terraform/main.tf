@@ -35,14 +35,14 @@ data "aws_iam_policy_document" "prowler_pro_saas_assume_role_policy" {
       identifiers = ["arn:aws:iam::232136659152:root"]
     }
     condition {
-      test     = "StringLike"
+      test     = "StringEquals"
       variable = "sts:ExternalId"
       values = [
         var.external_id,
       ]
     }
     condition {
-      test     = "StringEquals"
+      test     = "StringLike"
       variable = "aws:PrincipalArn"
       values = [
         "arn:aws:iam::232136659152:role/prowler-pro-saas*"
