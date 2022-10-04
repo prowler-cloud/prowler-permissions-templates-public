@@ -22,3 +22,4 @@ To deploy the ProwlerPro SaaS Role in order to allow to scan you AWS account, pl
 3. `terraform apply`
 
 During the `terraform plan` and `terraform apply` steps you will be asked for your AWS External ID.
+Note that Terraform will use the AWS credentials of your default profile.
