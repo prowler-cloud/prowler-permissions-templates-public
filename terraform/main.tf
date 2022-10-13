@@ -64,7 +64,6 @@ data "aws_iam_policy_document" "prowler_pro_saas_role_policy" {
       "ec2:GetEbsEncryptionByDefault",
       "ecr:Describe*",
       "elasticfilesystem:DescribeBackupPolicy",
-      "elasticfilesystem:DescribeFileSystems",
       "glue:GetConnections",
       "glue:GetSecurityConfiguration",
       "glue:SearchTables",
