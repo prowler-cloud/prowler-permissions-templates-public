@@ -2,7 +2,7 @@
 This repo holds the templates that creates the required permissions in a customer's account to be scanned by ProwlerPro SaaS:
 
 - [CloudFormation Template](./cloudformation/prowler-pro-scan-role.yaml)
-- [Terraform template](./terraform/main.tf)
+- [Terraform Template](./terraform/main.tf)
 
 ## Templates Description
 
