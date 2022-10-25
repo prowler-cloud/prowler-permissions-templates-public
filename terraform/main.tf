@@ -98,6 +98,6 @@ resource "aws_iam_role" "prowler_pro_saas_role" {
     "Terraform" = "true",
     "Service"   = "https://prowler.pro",
     "Support"   = "help@prowler.pro"
-    "Version"   = "1.0"
+    "Version"   = "1.0.1"
   })
 }
