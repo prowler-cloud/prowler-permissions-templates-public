@@ -55,15 +55,16 @@ data "aws_iam_policy_document" "prowler_pro_saas_role_policy" {
     effect = "Allow"
     actions = [
       "account:Get*",
-      "appstream:DescribeFleets",
-      "codeartifact:ListRepositories",
-      "codebuild:BatchGetBuilds",
+      "appstream:Describe*",
+      "codeartifact:List*",
+      "codebuild:Batch*",
       "ds:Get*",
       "ds:Describe*",
       "ds:List*",
       "ec2:GetEbsEncryptionByDefault",
       "ecr:Describe*",
       "elasticfilesystem:DescribeBackupPolicy",
+      "eks:List*",
       "glue:GetConnections",
       "glue:GetSecurityConfiguration",
       "glue:SearchTables",
@@ -74,6 +75,7 @@ data "aws_iam_policy_document" "prowler_pro_saas_role_policy" {
       "s3:GetPublicAccessBlock",
       "shield:DescribeProtection",
       "shield:GetSubscriptionState",
+      "securityhub:BatchImportFindings",
       "ssm:GetDocument",
       "support:Describe*",
       "tag:GetTagKeys"
