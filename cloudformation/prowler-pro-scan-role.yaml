@@ -81,3 +81,5 @@ Resources:
           Value: "true"
         - Key: "Name"
           Value: "ProwlerProSaaSScanRole"
+        - Key: "Version"
+          Value: "1.0"

@@ -91,5 +91,11 @@ resource "aws_iam_role" "prowler_pro_saas_role" {
     policy = data.aws_iam_policy_document.prowler_pro_saas_role_policy.json
 
   }
-  tags = tomap({ "Name" = "ProwlerProSaaSScanRole", "Terraform" = "true", "Service" = "https://prowler.pro", "Support" = "help@prowler.pro" })
+  tags = tomap({
+    "Name"      = "ProwlerProSaaSScanRole",
+    "Terraform" = "true",
+    "Service"   = "https://prowler.pro",
+    "Support"   = "help@prowler.pro"
+    "Version"   = "1.0"
+  })
 }
