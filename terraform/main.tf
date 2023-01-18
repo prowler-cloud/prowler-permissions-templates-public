@@ -11,7 +11,7 @@ variable "external_id" {
 # Terraform Provider Configuration
 ###################################
 terraform {
-  required_version = "~> 1.2.0"
+  required_version = "~> 1.3.0"
   required_providers {
     aws = {
       source  = "hashicorp/aws"
@@ -64,23 +64,32 @@ data "aws_iam_policy_document" "prowler_pro_saas_role_policy" {
       "ec2:GetEbsEncryptionByDefault",
       "ecr:Describe*",
       "elasticfilesystem:DescribeBackupPolicy",
-      "eks:List*",
       "glue:GetConnections",
-      "glue:GetSecurityConfiguration",
+      "glue:GetSecurityConfiguration*",
       "glue:SearchTables",
-      "lambda:GetFunction",
+      "lambda:GetFunction*",
       "macie2:GetMacieSession",
       "s3:GetAccountPublicAccessBlock",
-      "s3:GetEncryptionConfiguration",
       "s3:GetPublicAccessBlock",
       "shield:DescribeProtection",
       "shield:GetSubscriptionState",
       "securityhub:BatchImportFindings",
+      "securityhub:GetFindings",
       "ssm:GetDocument",
       "support:Describe*",
       "tag:GetTagKeys"
     ]
     resources = ["*"]
+  }
+}
+
+data "aws_iam_policy_document" "prowler_pro_saas_role_apigw_policy" {
+  statement {
+    effect = "Allow"
+    actions = [
+      "apigateway:GET"
+    ]
+    resources = ["arn:aws:apigateway:*::/restapis/*"]
   }
 }
 
@@ -91,7 +100,10 @@ resource "aws_iam_role" "prowler_pro_saas_role" {
   inline_policy {
     name   = "prowler-pro-saas-role-additional-view-privileges"
     policy = data.aws_iam_policy_document.prowler_pro_saas_role_policy.json
-
+  }
+  inline_policy {
+    name   = "prowler-pro-saas-role-apigateway-view-privileges"
+    policy = data.aws_iam_policy_document.prowler_pro_saas_role_apigw_policy.json
   }
   tags = tomap({
     "Name"      = "ProwlerProSaaSScanRole",
