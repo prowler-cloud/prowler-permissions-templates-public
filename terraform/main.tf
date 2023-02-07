@@ -70,7 +70,6 @@ data "aws_iam_policy_document" "prowler_pro_saas_role_policy" {
       "lambda:GetFunction*",
       "macie2:GetMacieSession",
       "s3:GetAccountPublicAccessBlock",
-      "s3:GetPublicAccessBlock",
       "shield:DescribeProtection",
       "shield:GetSubscriptionState",
       "securityhub:BatchImportFindings",
