@@ -1,0 +1,8 @@
+# Direnv
+.env*
+# Terraform
+.terraform*
+*.tfstate*
+*.tfvars
+# VSCode
+.vscode

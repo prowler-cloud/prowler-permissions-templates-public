@@ -56,6 +56,7 @@ data "aws_iam_policy_document" "prowler_pro_saas_role_policy" {
     actions = [
       "account:Get*",
       "appstream:Describe*",
+      "appstream:List*",
       "codeartifact:List*",
       "codebuild:BatchGet*",
       "ds:Get*",
