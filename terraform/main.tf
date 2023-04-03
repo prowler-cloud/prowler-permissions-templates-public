@@ -2,7 +2,7 @@
 ###################################
 variable "external_id" {
   type        = string
-  description = "Prowler Pro SaaS Customer External ID - Please input your external ID here below"
+  description = "ProwlerPro IAM Role External ID - Please input your External ID here below"
 }
 
 ##### PLEASE, DO NOT EDIT BELOW THIS LINE #####
@@ -11,7 +11,7 @@ variable "external_id" {
 # Terraform Provider Configuration
 ###################################
 terraform {
-  required_version = "~> 1.3.0"
+  required_version = ">= 1.3.0"
   required_providers {
     aws = {
       source  = "hashicorp/aws"
