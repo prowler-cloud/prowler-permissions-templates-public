@@ -57,18 +57,23 @@ data "aws_iam_policy_document" "prowler_pro_saas_role_policy" {
       "account:Get*",
       "appstream:Describe*",
       "appstream:List*",
+      "backup:List*",
+      "cloudtrail:GetInsightSelectors",
       "codeartifact:List*",
       "codebuild:BatchGet*",
+      "drs:Describe*",
       "ds:Get*",
       "ds:Describe*",
       "ds:List*",
       "ec2:GetEbsEncryptionByDefault",
       "ecr:Describe*",
+      "ecr:GetRegistryScanningConfiguration",
       "elasticfilesystem:DescribeBackupPolicy",
       "glue:GetConnections",
       "glue:GetSecurityConfiguration*",
       "glue:SearchTables",
       "lambda:GetFunction*",
+      "logs:FilterLogEvents",
       "macie2:GetMacieSession",
       "s3:GetAccountPublicAccessBlock",
       "shield:DescribeProtection",
@@ -76,6 +81,7 @@ data "aws_iam_policy_document" "prowler_pro_saas_role_policy" {
       "securityhub:BatchImportFindings",
       "securityhub:GetFindings",
       "ssm:GetDocument",
+      "ssm-incidents:List*",
       "support:Describe*",
       "tag:GetTagKeys"
     ]
@@ -89,7 +95,7 @@ data "aws_iam_policy_document" "prowler_pro_saas_role_apigw_policy" {
     actions = [
       "apigateway:GET"
     ]
-    resources = ["arn:aws:apigateway:*::/restapis/*"]
+    resources = ["arn:aws:apigateway:*::/restapis/*", "arn:aws:apigateway:*::/apis/*"]
   }
 }
 
