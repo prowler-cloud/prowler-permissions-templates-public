@@ -83,7 +83,8 @@ data "aws_iam_policy_document" "prowler_pro_saas_role_policy" {
       "ssm:GetDocument",
       "ssm-incidents:List*",
       "support:Describe*",
-      "tag:GetTagKeys"
+      "tag:GetTagKeys",
+      "wellarchitected:List*"
     ]
     resources = ["*"]
   }
