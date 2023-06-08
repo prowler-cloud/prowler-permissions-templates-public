@@ -78,6 +78,7 @@ Resources:
                 - 'ssm-incidents:List*'
                 - 'support:Describe*'
                 - 'tag:GetTagKeys'
+                - 'wellarchitected:List*'
               Resource: '*'
         - PolicyName: ProwlerProSaaSRoleApiGatewayViewPrivileges
           PolicyDocument:
