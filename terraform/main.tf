@@ -61,6 +61,7 @@ data "aws_iam_policy_document" "prowler_pro_saas_role_policy" {
       "cloudtrail:GetInsightSelectors",
       "codeartifact:List*",
       "codebuild:BatchGet*",
+      "dlm:Get*",
       "drs:Describe*",
       "ds:Get*",
       "ds:Describe*",
