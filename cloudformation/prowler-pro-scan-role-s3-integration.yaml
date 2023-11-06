@@ -23,6 +23,10 @@ Parameters:
     Description: |
       This is the name of the S3 Bucket where ProwlerPro SaaS will store the reports of your AWS Account(s).
     Type: String
+  DestinationBucketAccount:
+    Description: |
+      This is the AWS Account ID of the S3 Bucket where ProwlerPro SaaS will store the reports of your AWS Account(s).
+    Type: String
 
 Resources:
   ProwlerProRole:
@@ -106,7 +110,7 @@ Resources:
                 - !Sub "arn:${AWS::Partition}:s3:::${BucketName}/*"
               Condition:
                 StringEquals:
-                  "s3:ResourceAccount": !Sub ${AWS::AccountId}
+                  "s3:ResourceAccount": !Sub ${DestinationBucketAccount}
         - PolicyName: ProwlerProSaaSRoleS3IntegrationDelete
           PolicyDocument:
             Version : '2012-10-17'
@@ -118,7 +122,7 @@ Resources:
                 - !Sub "arn:${AWS::Partition}:s3:::${BucketName}/*ProwlerProBeacon"
               Condition:
                 StringEquals:
-                  "s3:ResourceAccount": !Sub ${AWS::AccountId}
+                  "s3:ResourceAccount": !Sub ${DestinationBucketAccount}
 
       Tags:
         - Key: "Service"
