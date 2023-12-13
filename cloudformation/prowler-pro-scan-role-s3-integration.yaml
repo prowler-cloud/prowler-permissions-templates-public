@@ -1,0 +1,137 @@
+AWSTemplateFormatVersion: '2010-09-09'
+
+# You can invoke CloudFormation and pass the principal ARN from a command line like this:
+# aws cloudformation create-stack \
+#  --capabilities CAPABILITY_IAM --capabilities CAPABILITY_NAMED_IAM \
+#  --template-body "file://prowler-pro-saas-scan-role.yaml" \
+#  --stack-name "ProwlerProSaaSScanRole" \
+#  --parameters "ParameterKey=ExternalId,ParameterValue=ProvidedExternalID"
+
+Description: |
+  This template creates the ProwlerProSaaSScanRole role in this account with 
+  all read-only permissions to scan your account for security issues. 
+  Contains two AWS managed policies (SecurityAudit and ViewOnlyAccess) and an inline policy. 
+  It sets the trust policy on that IAM Role to permit Prowler Pro to assume that role.
+Parameters:
+  ExternalId:
+    Description: |
+      DO NOT CHANGE THIS. 
+      This is the External ID that ProwlerPro SaaS will use to assume the role ProwlerProSaaSScanRole 
+      from ProwlerPro SaaS account. 
+    Type: String
+  BucketName:
+    Description: |
+      This is the name of the S3 Bucket where ProwlerPro SaaS will store the reports of your AWS Account(s).
+    Type: String
+  DestinationBucketAccount:
+    Description: |
+      This is the AWS Account ID of the S3 Bucket where ProwlerPro SaaS will store the reports of your AWS Account(s).
+    Type: String
+
+Resources:
+  ProwlerProRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: ProwlerProSaaSScanRole
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              AWS: !Sub arn:${AWS::Partition}:iam::232136659152:root
+            Action: 'sts:AssumeRole'
+            Condition:
+              StringEquals:
+                'sts:ExternalId': !Sub ${ExternalId}
+              StringLike:
+                'aws:PrincipalArn': !Sub arn:${AWS::Partition}:iam::232136659152:role/prowler-pro-saas*
+      MaxSessionDuration: 3600
+      ManagedPolicyArns:
+        - !Sub 'arn:${AWS::Partition}:iam::aws:policy/SecurityAudit'
+        - !Sub 'arn:${AWS::Partition}:iam::aws:policy/job-function/ViewOnlyAccess'
+      Policies:
+        - PolicyName: ProwlerProSaaSRoleAdditionalViewPrivileges
+          PolicyDocument:
+            Version : '2012-10-17'
+            Statement:
+            - Effect: Allow
+              Action:
+                - 'account:Get*'
+                - 'appstream:Describe*'
+                - 'appstream:List*'
+                - 'backup:List*'
+                - 'cloudtrail:GetInsightSelectors'
+                - 'codeartifact:List*'
+                - 'codebuild:BatchGet*'
+                - 'dlm:Get*'
+                - 'drs:Describe*'
+                - 'ds:Get*'
+                - 'ds:Describe*'
+                - 'ds:List*'
+                - 'ec2:GetEbsEncryptionByDefault'
+                - 'ecr:Describe*'
+                - 'ecr:GetRegistryScanningConfiguration'
+                - 'elasticfilesystem:DescribeBackupPolicy'
+                - 'glue:GetConnections'
+                - 'glue:GetSecurityConfiguration*'
+                - 'glue:SearchTables'
+                - 'lambda:GetFunction*'
+                - 'logs:FilterLogEvents'
+                - 'macie2:GetMacieSession'
+                - 's3:GetAccountPublicAccessBlock'
+                - 'shield:DescribeProtection'
+                - 'shield:GetSubscriptionState'
+                - 'securityhub:BatchImportFindings'
+                - 'securityhub:GetFindings'
+                - 'ssm:GetDocument'
+                - 'ssm-incidents:List*'
+                - 'support:Describe*'
+                - 'tag:GetTagKeys'
+                - 'wellarchitected:List*'
+              Resource: '*'
+        - PolicyName: ProwlerProSaaSRoleApiGatewayViewPrivileges
+          PolicyDocument:
+            Version : '2012-10-17'
+            Statement:
+            - Effect: Allow
+              Action:
+                - 'apigateway:GET'
+              Resource: 
+                - !Sub 'arn:${AWS::Partition}:apigateway:*::/restapis/*'
+                - !Sub 'arn:${AWS::Partition}:apigateway:*::/apis/*'
+        - PolicyName: ProwlerProSaaSRoleS3IntegrationPut
+          PolicyDocument:
+            Version : '2012-10-17'
+            Statement:
+            - Effect: Allow
+              Action:
+                - 's3:PutObject'
+              Resource:
+                - !Sub "arn:${AWS::Partition}:s3:::${BucketName}/*"
+              Condition:
+                StringEquals:
+                  "s3:ResourceAccount": !Sub ${DestinationBucketAccount}
+        - PolicyName: ProwlerProSaaSRoleS3IntegrationDelete
+          PolicyDocument:
+            Version : '2012-10-17'
+            Statement:
+            - Effect: Allow
+              Action:
+                - 's3:DeleteObject'
+              Resource:
+                - !Sub "arn:${AWS::Partition}:s3:::${BucketName}/*ProwlerProBeacon"
+              Condition:
+                StringEquals:
+                  "s3:ResourceAccount": !Sub ${DestinationBucketAccount}
+
+      Tags:
+        - Key: "Service"
+          Value: "https://prowler.pro"
+        - Key: "Support"
+          Value: "help@prowler.pro"
+        - Key: "CloudFormation"
+          Value: "true"
+        - Key: "Name"
+          Value: "ProwlerProSaaSScanRole"
+        - Key: "Version"
+          Value: "1.0.1"
