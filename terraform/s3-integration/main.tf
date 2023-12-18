@@ -142,6 +142,22 @@ data "aws_iam_policy_document" "prowler_pro_saas_role_s3_integration_put" {
     }
   }
 }
+data "aws_iam_policy_document" "prowler_pro_saas_role_s3_integration_location" {
+  statement {
+    effect = "Allow"
+    actions = [
+      "s3:PutObject"
+    ]
+    resources = ["arn:${data.aws_partition.current.partition}:s3:::${var.bucket_name}"]
+    condition {
+      test     = "StringEquals"
+      variable = "s3:GetBucketLocation"
+      values = [
+        var.destination_bucket_account,
+      ]
+    }
+  }
+}
 
 resource "aws_iam_role" "prowler_pro_saas_role" {
   name                = "ProwlerProSaaSScanRole"
@@ -154,6 +170,18 @@ resource "aws_iam_role" "prowler_pro_saas_role" {
   inline_policy {
     name   = "prowler-pro-saas-role-apigateway-view-privileges"
     policy = data.aws_iam_policy_document.prowler_pro_saas_role_apigw_policy.json
+  }
+  inline_policy {
+    name   = "prowler-pro-saas-role-s3-integration-location"
+    policy = data.aws_iam_policy_document.prowler_pro_saas_role_s3_integration_location.json
+  }
+  inline_policy {
+    name   = "prowler-pro-saas-role-s3-integration-put"
+    policy = data.aws_iam_policy_document.prowler_pro_saas_role_s3_integration_put.json
+  }
+  inline_policy {
+    name   = "prowler-pro-saas-role-s3-integration-delete"
+    policy = data.aws_iam_policy_document.prowler_pro_saas_role_s3_integration_delete.json
   }
   tags = tomap({
     "Name"      = "ProwlerProSaaSScanRole",
