@@ -111,6 +111,18 @@ Resources:
               Condition:
                 StringEquals:
                   "s3:ResourceAccount": !Sub ${DestinationBucketAccount}
+        - PolicyName: ProwlerProSaaSRoleS3IntegrationLocation
+          PolicyDocument:
+            Version : '2012-10-17'
+            Statement:
+            - Effect: Allow
+              Action:
+                - 's3:GetBucketLocation'
+              Resource:
+                - !Sub "arn:${AWS::Partition}:s3:::${BucketName}"
+              Condition:
+                StringEquals:
+                  "s3:ResourceAccount": !Sub ${DestinationBucketAccount}
         - PolicyName: ProwlerProSaaSRoleS3IntegrationDelete
           PolicyDocument:
             Version : '2012-10-17'
