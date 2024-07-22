@@ -24,6 +24,8 @@ provider "aws" {
   region = "us-east-1"
 }
 
+data "aws_partition" "current" {}
+
 
 # IAM Role
 ###################################
@@ -97,14 +99,14 @@ data "aws_iam_policy_document" "prowler_pro_saas_role_apigw_policy" {
     actions = [
       "apigateway:GET"
     ]
-    resources = ["arn:aws:apigateway:*::/restapis/*", "arn:aws:apigateway:*::/apis/*"]
+    resources = ["arn:${data.aws_partition.current.partition}:apigateway:*::/restapis/*", "arn:${data.aws_partition.current.partition}:apigateway:*::/apis/*"]
   }
 }
 
 resource "aws_iam_role" "prowler_pro_saas_role" {
   name                = "ProwlerProSaaSScanRole"
   assume_role_policy  = data.aws_iam_policy_document.prowler_pro_saas_assume_role_policy.json
-  managed_policy_arns = ["arn:aws:iam::aws:policy/SecurityAudit", "arn:aws:iam::aws:policy/job-function/ViewOnlyAccess"]
+  managed_policy_arns = ["arn:${data.aws_partition.current.partition}:iam::aws:policy/SecurityAudit", "arn:${data.aws_partition.current.partition}:iam::aws:policy/job-function/ViewOnlyAccess"]
   inline_policy {
     name   = "prowler-pro-saas-role-additional-view-privileges"
     policy = data.aws_iam_policy_document.prowler_pro_saas_role_policy.json
