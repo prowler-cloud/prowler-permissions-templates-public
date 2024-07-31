@@ -61,6 +61,7 @@ Resources:
                 - 'ds:Describe*'
                 - 'ds:List*'
                 - 'ec2:GetEbsEncryptionByDefault'
+                - 'ec2:GetSnapshotBlockPublicAccessState'
                 - 'ecr:Describe*'
                 - 'ecr:GetRegistryScanningConfiguration'
                 - 'elasticfilesystem:DescribeBackupPolicy'

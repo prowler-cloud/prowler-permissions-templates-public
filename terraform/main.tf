@@ -69,6 +69,7 @@ data "aws_iam_policy_document" "prowler_pro_saas_role_policy" {
       "ds:Describe*",
       "ds:List*",
       "ec2:GetEbsEncryptionByDefault",
+      "ec2:GetSnapshotBlockPublicAccessState",
       "ecr:Describe*",
       "ecr:GetRegistryScanningConfiguration",
       "elasticfilesystem:DescribeBackupPolicy",
