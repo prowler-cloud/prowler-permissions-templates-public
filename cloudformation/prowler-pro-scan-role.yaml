@@ -78,6 +78,8 @@ Resources:
                 - 's3:GetAccountPublicAccessBlock'
                 - 'shield:DescribeProtection'
                 - 'shield:GetSubscriptionState'
+                - 'servicecatalog:Describe*'
+                - 'servicecatalog:List*'
                 - 'securityhub:BatchImportFindings'
                 - 'securityhub:GetFindings'
                 - 'ssm:GetDocument'

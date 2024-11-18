@@ -84,6 +84,8 @@ data "aws_iam_policy_document" "prowler_pro_saas_role_policy" {
       "lightsail:GetRelationalDatabases",
       "macie2:GetMacieSession",
       "s3:GetAccountPublicAccessBlock",
+      "servicecatalog:Describe*",
+      "servicecatalog:List*",
       "shield:DescribeProtection",
       "shield:GetSubscriptionState",
       "securityhub:BatchImportFindings",
