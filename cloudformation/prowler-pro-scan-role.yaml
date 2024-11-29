@@ -78,6 +78,8 @@ Resources:
                 - 'glue:GetMLTransforms'
                 - 'lambda:GetFunction*'
                 - 'logs:FilterLogEvents'
+                - 'servicecatalog:Describe*'
+                - 'servicecatalog:List*'
                 - 'lightsail:GetRelationalDatabases'
                 - 'macie2:GetMacieSession'
                 - 'macie2:GetAutomatedDiscoveryConfiguration'
